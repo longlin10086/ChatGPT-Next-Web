@@ -259,7 +259,7 @@ const openaiModels = [
 // "qwen-max-longcontext",
 // ];
 
-const dell3Modes = ["dell3"];
+const dell3Modes = ["dell-e-3"];
 
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({
@@ -275,9 +275,9 @@ export const DEFAULT_MODELS = [
     name,
     available: true,
     provider: {
-      id: "dell3",
+      id: "dell-e-3",
       providerName: "Dell3",
-      providerType: "dell3",
+      providerType: "dell-e-3",
     },
   })),
   // ...openaiModels.map((name) => ({
