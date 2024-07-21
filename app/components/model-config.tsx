@@ -1,10 +1,31 @@
 import { ServiceProvider } from "@/app/constant";
 import { ModalConfigValidator, ModelConfig } from "../store";
-
+import React, { useState, ReactNode } from "react";
 import Locale from "../locales";
 import { InputRange } from "./input-range";
 import { ListItem, Select } from "./ui-lib";
 import { useAllModels } from "../utils/hooks";
+import { IconButton } from "./button"; // 假设 IconButton 文件名为 button.tsx
+
+interface ToggleWrapperProps {
+  title: string;
+  children: ReactNode;
+}
+
+function ToggleWrapper({ title, children }: ToggleWrapperProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div>
+      <IconButton
+        onClick={() => setIsVisible(!isVisible)}
+        text={isVisible ? "▲" : "▼"}
+        type="primary"
+      />
+      {isVisible && <div>{children}</div>}
+    </div>
+  );
+}
 
 export function ModelConfigList(props: {
   modelConfig: ModelConfig;
@@ -14,7 +35,7 @@ export function ModelConfigList(props: {
   const value = `${props.modelConfig.model}@${props.modelConfig?.providerName}`;
 
   return (
-    <>
+    <ToggleWrapper title="模型设置">
       <ListItem title={Locale.Settings.Model}>
         <Select
           value={value}
@@ -35,6 +56,7 @@ export function ModelConfigList(props: {
             ))}
         </Select>
       </ListItem>
+
       <ListItem
         title={Locale.Settings.Temperature.Title}
         subTitle={Locale.Settings.Temperature.SubTitle}
@@ -42,7 +64,7 @@ export function ModelConfigList(props: {
         <InputRange
           value={props.modelConfig.temperature?.toFixed(1)}
           min="0"
-          max="1" // lets limit it to 0-1
+          max="1"
           step="0.1"
           onChange={(e) => {
             props.updateConfig(
@@ -54,6 +76,7 @@ export function ModelConfigList(props: {
           }}
         ></InputRange>
       </ListItem>
+
       <ListItem
         title={Locale.Settings.TopP.Title}
         subTitle={Locale.Settings.TopP.SubTitle}
@@ -73,6 +96,7 @@ export function ModelConfigList(props: {
           }}
         ></InputRange>
       </ListItem>
+
       <ListItem
         title={Locale.Settings.MaxTokens.Title}
         subTitle={Locale.Settings.MaxTokens.SubTitle}
@@ -170,6 +194,7 @@ export function ModelConfigList(props: {
           </ListItem>
         </>
       )}
+
       <ListItem
         title={Locale.Settings.HistoryCount.Title}
         subTitle={Locale.Settings.HistoryCount.SubTitle}
@@ -217,6 +242,6 @@ export function ModelConfigList(props: {
           }
         ></input>
       </ListItem>
-    </>
+    </ToggleWrapper>
   );
 }
